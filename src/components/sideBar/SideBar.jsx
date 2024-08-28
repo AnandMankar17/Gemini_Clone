@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './SideBar.css'
 import '../../assets/assets'
 import { assets } from '../../assets/assets'
-
+import {AppContext} from '../../contexts/Context'
 function SideBar() {
 
   const [extended, setExtended] = useState(false);
+  const {onSent, prevPrompts, setRecentPrompt} = useContext(AppContext);
   
 
 
@@ -18,16 +19,21 @@ function SideBar() {
         <img onClick={()=>{setExtended((prev)=>!prev)}} src={assets.menu_icon} alt="menu" />
         </div>
         <div className="new-chat">
-          <img src={assets.plus_icon} alt="" />
+          <img  src={assets.plus_icon} alt="" />
           {extended?<p>New Chat</p>:null}
         </div>
         {extended
           ?<div className="recent">
           <p className="recent-title">Recent</p>
-          <div className="recent-entry">
+          {prevPrompts.map((item)=>{
+            return (
+              <div className="recent-entry">
             <img src={assets.message_icon} alt="" />
-            <p>What is react ...</p>
+            <p>{item.slice(0,16)} ...</p>
           </div>
+
+            )
+          })}
         </div>:
         null}
         
